@@ -7,4 +7,8 @@
     <string name="error_enter_three_colors">Three colors must be selected before an event can be recorded</string>
     <string name="error_enter_experiment_ID">An experiment ID must be entered</string>
 
+    <string name="start">Start</string>
+    <string name="data_set_name">Data set name</string>
+    <string name="recent_data_sets">Recent data sets</string>
+
 </resources>

@@ -4,10 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 
 import org.samcrow.markedantrecorder.data.ColorDataSet;
@@ -15,11 +13,13 @@ import org.samcrow.markedantrecorder.data.ColorDataSet.Color;
 import org.samcrow.markedantrecorder.data.ColorDataSet.ColorChangeListener;
 import org.samcrow.markedantrecorder.io.RecorderFileInterface;
 import org.samcrow.markedantrecorder.io.RecorderFileInterface.InOut;
-import org.samcrow.markedantrecorder.util.AlertDialogFragment;
 
 import java.io.IOException;
 
 public class EntryActivity extends AppCompatActivity implements ColorChangeListener {
+
+    public static final String EXTRA_FILE_PATH = EntryActivity.class.getName() + ".EXTRA_FILE_PATH";
+    public static final String EXTRA_DATA_SET = EntryActivity.class.getName() + ".EXTRA_DATA_SET";
 
 	private ColorDataSet colors = new ColorDataSet();
 
@@ -27,9 +27,12 @@ public class EntryActivity extends AppCompatActivity implements ColorChangeListe
 	private Button currentEntry2;
 	private Button currentEntry3;
 
-	private EditText experimentIdField;
-
 	private RadioButton inRadio;
+
+    /**
+     * Path to the CSV file to write
+     */
+	private String mFilePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +43,19 @@ public class EntryActivity extends AppCompatActivity implements ColorChangeListe
 		currentEntry2 = (Button) findViewById(R.id.currentEntry2);
 		currentEntry3 = (Button) findViewById(R.id.currentEntry3);
 
-		experimentIdField = (EditText) findViewById(R.id.experimentId);
-
 		inRadio = (RadioButton) findViewById(R.id.inRadio);
 
 		colors.addListener(this);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.entry, menu);
-		return true;
+        final String dataSetName = getIntent().getStringExtra(EXTRA_DATA_SET);
+        if (dataSetName != null) {
+            setTitle(dataSetName);
+        }
+
+        mFilePath = getIntent().getStringExtra(EXTRA_FILE_PATH);
+        if (mFilePath == null) {
+            throw new IllegalStateException("This activity must be started with a file path extra");
+        }
 	}
 
 	@Override
@@ -79,15 +83,6 @@ public class EntryActivity extends AppCompatActivity implements ColorChangeListe
 					.show();
 			return;
 		}
-		String experimentId = experimentIdField.getText().toString();
-		if (experimentId.isEmpty()) {
-			AlertDialogFragment.newInstance(R.string.error_enter_experiment_ID).show(getFragmentManager(), "dialog");
-			return;
-		}
-		if (experimentId.contains("/")) {
-			AlertDialogFragment.newInstance("Experiment ID must not contain a slash character. Consider using a dash instead.").show(getFragmentManager(), "dialog");
-			return;
-		}
 
 		//Get the ant direction
 		InOut direction;
@@ -98,7 +93,7 @@ public class EntryActivity extends AppCompatActivity implements ColorChangeListe
 		}
 
 		try {
-			RecorderFileInterface.writeEvent(experimentId, direction, colors);
+			RecorderFileInterface.writeEvent(mFilePath, direction, colors);
 		} catch (IOException e) {
 			e.printStackTrace();
 			new AlertDialog.Builder(this)

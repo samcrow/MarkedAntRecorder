@@ -8,7 +8,6 @@ import java.io.PrintStream;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.samcrow.markedantrecorder.data.ColorDataSet;
-import org.samcrow.markedantrecorder.util.Storage;
 
 /**
  * Records ant events to a file
@@ -19,14 +18,13 @@ public class RecorderFileInterface {
 
 	/**
 	 * Writes an event to the correct file
-	 * @param experimentId
+	 * @param filePath the path to the file to write to
 	 * @param direction
 	 * @param colors
 	 * @throws IOException If an IO error occurred
 	 */
-	public static void writeEvent(String experimentId, InOut direction, ColorDataSet colors) throws IOException {
-		final File cardDir = Storage.getMemoryCard();
-		File csvFile = new File(cardDir, "color_events_"+experimentId+".csv");
+	public static void writeEvent(String filePath, InOut direction, ColorDataSet colors) throws IOException {
+		File csvFile = new File(filePath);
 		
 		//If the file header should be printed
 		boolean printHeader = false;

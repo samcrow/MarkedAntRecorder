@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.samcrow.markedantrecorder" >
     
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -7,13 +8,19 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="stateHidden"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".EntryActivity"
             android:label="@string/app_name"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity android:name=".SetupActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

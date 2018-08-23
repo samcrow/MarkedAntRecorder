@@ -6,4 +6,7 @@
     <dimen name="big_text">40dp</dimen>
     <dimen name="color_button_height">40sp</dimen>
 
+    <dimen name="setup_padding">10dp</dimen>
+    <dimen name="setup_text_size">30sp</dimen>
+
 </resources>

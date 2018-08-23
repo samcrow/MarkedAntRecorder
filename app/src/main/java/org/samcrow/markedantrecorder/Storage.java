@@ -1,4 +1,4 @@
-package org.samcrow.markedantrecorder.util;
+package org.samcrow.markedantrecorder;
 
 import android.os.Environment;
 
